@@ -1,0 +1,146 @@
+body {
+  margin: 0;
+  background-color: wheat;
+}
+.container {
+  position: relative;
+  padding-top: 30px;
+  width: 320px;
+  height: 300px;
+  margin: 100px auto;
+  background-color: #fff;
+  border-radius: 10px;
+}
+#instruction {
+  padding-top: 60px;
+  text-align: center;
+  font-size: 20px;
+  line-height: 48px;
+}
+#instruction.hide {
+  display: none;
+}
+#question1, #question2 {
+  margin: 0 auto;
+  width: 280px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  font-size: 24px;
+  font-weight: bold;
+}
+#choicesarea {
+  margin-top: 30px;
+  width: 320px;
+  height: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+#choicesarea div {
+  width: 100px;
+  height: 48px;
+  border-radius: 4px;
+  border: 1px solid #000;
+  font-weight: bold;
+  text-align: center;
+  line-height: 48px;
+  cursor: pointer;
+}
+#result {
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  width: 270px;
+  /* height: 120px; */
+  line-height: 32px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  transform: translateY(-500px);
+  transition: transform 0.5s;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+#result p {
+  margin: 16px;
+}
+#result.show {
+  transform: none;
+}
+.home {
+  position: absolute;
+  top: -48px;
+  right: 4px;
+  background-color: #e4e4e4;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  vertical-align: bottom;
+}
+.home a {
+  display: block;
+  text-decoration: none;
+  color: #0a0a0a;
+  font-size: 24px;
+  text-align: center;
+  line-height: 32px;
+}
+.home span {
+  line-height: 32px;
+}
+.text {
+  position: absolute;
+  top: 8px;
+  right: -12px;
+  font-size: 12px;
+  width: 80px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none; 
+}
+.home:hover .text {
+  opacity: 1;
+}
+.home:hover span {
+  opacity: 0.3;
+}
+.restart {
+  position: absolute;
+  top: -48px;
+  left: 4px;
+  background-color: #e4e4e4;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  vertical-align: bottom;
+}
+.restart a {
+  display: block;
+  text-decoration: none;
+  color: #0a0a0a;
+  font-size: 24px;
+  text-align: center;
+  line-height: 32px;
+}
+.restart span {
+  line-height: 32px;
+}
+.replay {
+  position: absolute;
+  top: 8px;
+  left: -4px;
+  font-size: 12px;
+  width: 80px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none; 
+}
+.restart:hover .replay {
+  opacity: 1;
+}
+.restart:hover span {
+  opacity: 0.3;
+}
