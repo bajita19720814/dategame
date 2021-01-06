@@ -10,6 +10,7 @@
   const replay = document.getElementById('replay');  
   let correctCount = 0;
   let quizCount = 0;
+  let startTime; 
   let isGaming = false;
   const AorP = ["AM", "PM"];
   const BorA = [{n: -1, t: "前"}, {n: 1, t: "後"}];
@@ -20,11 +21,14 @@
     if (isGaming) {
       return;
     }
+    startTime = Date.now();
     result.classList.remove("show");
     instruction.classList.add('hide');
-    quizCount++;
+    quizCount = 1;
+    correctCount = 0;
     isGaming = true;
     new TimeGame(11, 30);
+    replay.textContent = "";
   });
   function setNewDate(day, gap) {
     return new Date(day.setDate(day.getDate() + gap));
@@ -40,6 +44,13 @@
       this.targetDate = this.correctDate.getDate();
       this.targetDay = this.correctDate.getDay();
       this.setChoices();
+    }
+    getResult() {
+      const t = Math.floor((Date.now() - startTime) / 1000);
+      replay.textContent = `タイムは${t}秒だよ。もう一度チャレンジするにはクリックしてね。`;
+      setTimeout(() => {
+        isGaming = false;
+      }, 100);
     }
     setChoices() {
       while (choicesarea.firstChild) {
@@ -64,17 +75,14 @@
             result_score.textContent = `SCORE : ${correctCount} / ${quizCount}`;
             result.classList.add('show'); 
             if (correctCount === 10) {
-              replay.textContent = 'もう一度やり直すにはクリックしてね';
-              setTimeout(() => {
-                isGaming = false;
-              }, 100);
+              this.getResult();
               return;
             } 
             setTimeout(() => {
               result.classList.remove('show');
               quizCount++;
                 new DateGame();
-            }, 1200);         
+            }, 900);         
           });  
         }
       } else {
@@ -97,17 +105,14 @@
             result_score.textContent = `SCORE : ${correctCount} / ${quizCount}`;
             result.classList.add('show'); 
             if (correctCount === 10) {
-              replay.textContent = 'もう一度やり直すにはクリックしてね';
-              setTimeout(() => {
-                isGaming = false;
-              }, 100);
+              this.getResult();
               return;
             } 
             setTimeout(() => {
               result.classList.remove('show');
               quizCount++;
                 new DateGame();
-            }, 1200);         
+            }, 900);         
           });  
         }
       }      
@@ -182,12 +187,12 @@
             } else {
               new DateGame();
             }
-          }, 1200);         
+          }, 900);         
         });
       }
     }
     setChoiceTimes() {
-      let choiceTimes = [
+      let otherTimes = [
         this.correctTime + 1,
         this.correctTime - 1,
         this.correctTime + (2 * (Math.random() < 0.5 ? 1 : -1)),
@@ -196,15 +201,15 @@
         this.correctTime + (5 * (Math.random() < 0.5 ? 1 : -1)),
         this.time + this.gapTime * (this.BorAIndex === 0 ? 1 : -1),
       ];
-      choiceTimes.forEach(choiceTime => {
-        if (choiceTime < 0) {
-          choiceTime = choiceTime + (24 * 60);
-        } else if (choiceTime >= (24 * 60)) {
-          choiceTime = choiceTime - (24 * 60);
+      otherTimes.forEach((otherTime, index) => {
+        if (otherTime < 0) {
+          otherTimes[index] = otherTime + (24 * 60);
+        } else if (otherTime >= (24 * 60)) {
+          otherTimes[index] = otherTime - (24 * 60);
         } 
       });
       for (let i = 0; i < 3; i++) {
-        this.choiceTimes.push(choiceTimes.splice(Math.floor(Math.random() * choiceTimes.length), 1)[0]);
+        this.choiceTimes.push(otherTimes.splice(Math.floor(Math.random() * otherTimes.length), 1)[0]);
       }
     }
     setQuestion() {

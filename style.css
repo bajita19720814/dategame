@@ -61,7 +61,7 @@ body {
   font-size: 24px;
   font-weight: bold;
   transform: translateY(-500px);
-  transition: transform 0.5s;
+  transition: transform 0.3s;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 #result p {
@@ -69,6 +69,9 @@ body {
 }
 #result.show {
   transform: none;
+}
+#replay {
+  font-size: 14px;
 }
 .home {
   position: absolute;
