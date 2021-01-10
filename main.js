@@ -87,7 +87,7 @@
         }
       } else {
         const choiceGaps = [0, 1, -1, 2 * (Math.random() < 0.5 ? 1 : -1), 3 * (Math.random() < 0.5 ? 1 : -1), 5 * (Math.random() < 0.5 ? 1 : -1)];
-        console.log(choiceGaps);
+        // console.log(choiceGaps);
         for (let i = 0; i < 6; i++) {
           const div = document.createElement('div');
           const gap = choiceGaps.splice(Math.floor(Math.random() * choiceGaps.length), 1)[0];
@@ -153,7 +153,7 @@
     constructor(minGap, maxGap) {      
       this.BorAIndex = Math.floor(Math.random() * 2);
       this.time = Math.floor(Math.random() * 24 * 60);
-      this.gapTime = Math.floor(Math.random() * (maxGap - minGap)) + minGap;
+      this.gapTime = this.getGapTime(minGap, maxGap);
       this.correctTime = this.getCorrectTime();
       this.setQuestion();
       this.choiceTimes = [this.correctTime, this.correctTime + 10,
@@ -161,13 +161,29 @@
       this.setChoiceTimes();
       this.setChoices();
     }
+    getGapTime(minGap, maxGap) {
+      let gaptime;
+      do {
+      gaptime = Math.floor(Math.random() * (maxGap - minGap)) + minGap;
+      } while (gaptime % 60 === 0);
+      return gaptime;  
+    }
     setChoices() {
       while (choicesarea.firstChild) {
         choicesarea.removeChild(choicesarea.firstChild);
       }
+      const modifiedTimes = this.choiceTimes.map(time => {
+        if (time < 0) {
+        return time + (24 * 60);
+        } else if (time >= (24 * 60)) {
+          return time - (24 * 60);
+        } else {
+          return time;
+        }
+      });
       for (let i = 0; i < 6; i++) {
         const div = document.createElement('div');
-        const choiceTime = this.choiceTimes.splice(Math.floor(Math.random() * this.choiceTimes.length), 1)[0];
+        const choiceTime = modifiedTimes.splice(Math.floor(Math.random() * modifiedTimes.length), 1)[0];
         div.textContent = `${AorP[Math.floor(choiceTime / 720)]}${Math.floor(choiceTime / 60) % 12}:${String(choiceTime % 60).padStart(2, "0")}`;
         choicesarea.appendChild(div);
         div.addEventListener('click', () => {
@@ -192,22 +208,18 @@
       }
     }
     setChoiceTimes() {
-      let otherTimes = [
+      const otherTimes = [
         this.correctTime + 1,
         this.correctTime - 1,
         this.correctTime + (2 * (Math.random() < 0.5 ? 1 : -1)),
         this.correctTime + (3 * (Math.random() < 0.5 ? 1 : -1)),
         this.correctTime + (4 * (Math.random() < 0.5 ? 1 : -1)),
         this.correctTime + (5 * (Math.random() < 0.5 ? 1 : -1)),
-        this.time + this.gapTime * (this.BorAIndex === 0 ? 1 : -1),
+        this.correctTime + 60,
+        this.correctTime - 60,
+        this.correctTime + (120 * (Math.random() < 0.5 ? 1 : -1))
       ];
-      otherTimes.forEach((otherTime, index) => {
-        if (otherTime < 0) {
-          otherTimes[index] = otherTime + (24 * 60);
-        } else if (otherTime >= (24 * 60)) {
-          otherTimes[index] = otherTime - (24 * 60);
-        } 
-      });
+      
       for (let i = 0; i < 3; i++) {
         this.choiceTimes.push(otherTimes.splice(Math.floor(Math.random() * otherTimes.length), 1)[0]);
       }
@@ -216,8 +228,6 @@
       question1.textContent = `${AorP[Math.floor(this.time / 720)]}${Math.floor(this.time / 60) % 12}:${String(this.time % 60).padStart(2, "0")} の`;
       if (this.gapTime < 120) {
         question2.textContent = `${this.gapTime}分${BorA[this.BorAIndex].t}は何時何分?`;
-      } else if (this.gapTime % 60 === 0) {
-        question2.textContent = `${this.gapTime / 60}時間${BorA[this.BorAIndex].t}は何時何分?`;
       } else {
         question2.textContent = `${Math.floor(this.gapTime / 60)}時間${this.gapTime % 60}分${BorA[this.BorAIndex].t}は何時何分?`;
       }
